@@ -1,0 +1,67 @@
+// This Pine Script™ code is subject to the terms of the Mozilla Public License 2.0 at https://mozilla.org/MPL/2.0/
+// © dhelm
+
+//@version=6
+indicator("Candle Stick Patterns", overlay = true)
+candle_patten_display_status = input.bool(defval=false, title="Candle Pattern display" ,group = "Candle Pattern")
+candle_patten_display = display.none
+if candle_patten_display_status
+    candle_patten_display := display.all
+bullish_harami =  close[1] < open[1] and close > open and high < high[1] and low > low[1]
+plotshape(bullish_harami, "bullish_harami", style = shape.arrowup, color = color.green, text="BH", textcolor = color.green, display = display.all, location = location.abovebar)
+
+bearish_harami =  close[1] > open[1] and close < open and high < high[1] and low > low[1]
+plotshape(bearish_harami, "bearish_harami", style = shape.arrowdown, color = color.red, text="BH", textcolor = color.red, display = candle_patten_display , location = location.belowbar )
+
+bullish_engulfing =  close[1] < open[1] and close > open and high > high[1] and low < low[1]
+plotshape(bullish_engulfing, "bullish_engulfing", style = shape.arrowup, color = color.green, text="BE", textcolor = color.green, display = candle_patten_display, location = location.abovebar)
+
+bearish_engulfing =  close[1] > open[1] and close < open and high > high[1] and low < low[1]
+plotshape(bearish_engulfing, "bearish_engulfing", style = shape.arrowdown, color = color.red, text="BE", textcolor = color.red, display = candle_patten_display, location = location.belowbar)
+
+hammer = math.min(close,open) - low > 2*math.abs(close-open) and math.abs(close-open) > high - math.max(open, close)
+plotshape(hammer, "hammer", style = shape.arrowdown, color = color.red, text="Hammer", textcolor = color.red, display = candle_patten_display, location = location.belowbar)
+
+hanging_man = math.min(close,open) - low > 2*math.abs(close-open) and math.abs(close-open) > high - math.max(open, close) and math.min(close,open) > high[1] and
+ high[1]+ high[1]*((high[1] - high[2])/high[2]) < close
+plotshape(hanging_man, "hanging_man", style = shape.arrowdown, color = color.red, text="hanging_man", textcolor = color.red, display = candle_patten_display, location = location.belowbar)
+
+gapping_up_doji = low > high[1] and math.abs(close-open) < math.min(close,open) - low and math.abs(close-open) < high -  math.max(close,open)
+plotshape(gapping_up_doji, "gapping_up_doji", style = shape.arrowdown, color = color.green, text="gapping_up_doji", textcolor = color.green, display = candle_patten_display, location = location.abovebar)
+
+gapping_down_doji = high < low[1] and math.abs(close-open) < math.min(close,open) - low and math.abs(close-open) < high -  math.max(close,open)
+plotshape(gapping_down_doji, "gapping_down_doji", style = shape.arrowdown, color = color.red, text="gapping_down_doji", textcolor = color.red, display = candle_patten_display, location = location.belowbar)
+
+takuri_line = math.min(close,open) - low > 3*math.abs(close-open) and math.abs(close-open) > high - math.max(open, close) and  low[2] > low[1]  and high[2] > high[1] and close < math.avg(open[1],high[1],close[1])
+plotshape(takuri_line, "takuri_line", style = shape.arrowdown, color = color.green, text="takuri_line", textcolor = color.green, display = candle_patten_display, location = location.abovebar)
+
+dark_cloud_cover = close[1] > open[1] and close < open and open >= high[1] and close > open[1] and close < math.avg(high[1], low[1]) and low>low[1]
+plotshape(dark_cloud_cover, "dark_cloud_cover", style = shape.arrowdown, color = color.red, text="dark_cloud_cover", textcolor = color.red, display = candle_patten_display, location = location.belowbar)
+
+piercing = close[1] < open[1] and close > open and open <= low[1] and close < open[1] and close > math.avg(high[1], low[1]) and high<high[1]
+plotshape(piercing, "piercing", style = shape.arrowdown, color = color.green, text="piercing", textcolor = color.green, display = candle_patten_display, location = location.abovebar)
+
+homing_pigeon = close[1] < open[1] and close < open and open < open[1] and close > close[1]
+plotshape(homing_pigeon, "homing_pigeon", style = shape.arrowdown, color = color.green, text="homing_pigeon", textcolor = color.green, display = candle_patten_display, location = location.abovebar)
+
+descending_hawk  = close[1] > open[1] and close > open and open > open[1] and close < close[1]
+plotshape(descending_hawk, "descending_hawk", style = shape.arrowdown, color = color.red, text="descending_hawk", textcolor = color.red, display = candle_patten_display, location = location.belowbar)
+
+tweezers_bottom  = low[1] ==low
+plotshape(tweezers_bottom, "tweezers_bottom", style = shape.arrowdown, color = color.green, text="tweezers_bottom", textcolor = color.green, display = candle_patten_display, location = location.abovebar)
+
+tweezers_top  = high[1] ==high
+plotshape(tweezers_bottom, "tweezers_top", style = shape.arrowdown, color = color.red, text="tweezers_top", textcolor = color.red, display = candle_patten_display, location = location.belowbar)
+
+inverted_hammer = close[1] < open[1] and math.min(open, close) - low < math.abs(close-open) and high - math.max(open, close) > 2.5*math.abs(close-open) and low[2] > low[1] and open <= close[1]
+plotshape(inverted_hammer, "inverted_hammer", style = shape.arrowdown, color = color.green, text="inverted_hammer", textcolor = color.green, display = candle_patten_display, location = location.abovebar)
+
+shooting_star = math.min(open, close) - low < math.abs(close-open) and high - math.max(open, close) > 2.5*math.abs(close-open) and high[2] < high[1] and open >= close[1]
+plotshape(shooting_star, "shooting_star", style = shape.arrowdown, color = color.red, text="shooting_star", textcolor = color.red, display = candle_patten_display, location = location.belowbar)
+
+
+morning_star = close[2] < open[2] and math.max(open[1], close[1]) < math.min(open[2], close[2]) and close > open and math.max(open[1], close[1]) < math.min(open, close) and close > math.avg(close[2], open[2], high[2], low[2])
+plotshape(morning_star, "morning_star", style = shape.arrowdown, color = color.green, text="morning_star", textcolor = color.green, display = candle_patten_display, location = location.abovebar)
+
+evening_star = close[2] > open[2] and math.min(open[1], close[1]) > math.max(open[2], close[2]) and close < open and math.min(open[1], close[1]) > math.max(open, close) and close < math.avg(close[2], open[2], high[2], low[2])
+plotshape(evening_star, "evening_star ", style = shape.arrowdown, color = color.red, text="evening_star ", textcolor = color.red, display = candle_patten_display , location = location.belowbar)
